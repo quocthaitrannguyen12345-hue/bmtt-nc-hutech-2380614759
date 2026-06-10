@@ -3,12 +3,16 @@ class VigenereCipher:
         pass
 
     # ================= ENCRYPT =================
-    def encrypt(self, plain_text, key):
+    def encrypt_text(self, plain_text, key):
+        if not key:
+            return plain_text  # Nếu key trống, trả về nguyên bản
+            
         encrypted_text = ""
         key_index = 0
 
         for char in plain_text:
             if char.isalpha():
+                # Lấy độ dịch chuyển dựa trên ký tự key tương ứng
                 key_shift = ord(key[key_index % len(key)].upper()) - ord('A')
 
                 if char.isupper():
@@ -23,12 +27,16 @@ class VigenereCipher:
         return encrypted_text
 
     # ================= DECRYPT =================
-    def decrypt(self, cipher_text, key):
+    def decrypt_text(self, cipher_text, key):
+        if not key:
+            return cipher_text # Nếu key trống, trả về nguyên bản
+            
         decrypted_text = ""
         key_index = 0
 
         for char in cipher_text:
             if char.isalpha():
+                # Lấy độ dịch chuyển dựa trên ký tự key tương ứng
                 key_shift = ord(key[key_index % len(key)].upper()) - ord('A')
 
                 if char.isupper():

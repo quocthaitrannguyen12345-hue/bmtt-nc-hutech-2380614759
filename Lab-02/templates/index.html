@@ -1,19 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
+    <meta charset="UTF-8">
     <title>Thực hành an toàn thông tin nâng cao</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <title>Trần Nguyễn Quốc Thái</title>
+    <title>MSSV : 2380614759</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding-top: 50px; background-color: #f8f9fa; }
+        .cipher-btn {
+            display: block;
+            width: 300px;
+            margin: 10px auto; /* Căn giữa */
+            padding: 12px;
+            text-decoration: none;
+            color: white !important;
+            border-radius: 50px; /* Bo tròn nút */
+            font-weight: bold;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .cipher-btn:hover { opacity: 0.8; transform: translateY(-2px); }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <img src="https://file1.hutech.edu.vn/file/editor/homepage/stories/hinh34/logo%20CMYK-01.png" alt="hutech" style ="display: block; margin-left: auto; margin-right: auto; width: 30%;">
-        <h4 style="font-weight: bold; text-align: center;"> BÀI THỰC HÀNH BẢO MẬT THÔNG TIN NÂNG CAO </h4>
-        <ul style="margin-top: 30px;">
-            <li> <a href="/caesar">caesar Cipher</a>
-            <li><a href="/playfair">playfair Cipher</a>
-            <li><a href="/railfence">railfence Cipher</a>
-            <li><a href="/vigenere">vigenere Cipher</a>
-        </ul>
+    <div class="container text-center">
+        <img src="https://file1.hutech.edu.vn/file/editor/homepage/stories/hinh34/logo%20CMYK-01.png" 
+             alt="hutech" class="mb-4" style="width: 30%;">
+        
+        <h4 class="font-weight-bold mb-4"> BÀI THỰC HÀNH BẢO MẬT THÔNG TIN NÂNG CAO </h4>
+        <h4 class="font-weight-bold mb-4"> Sinh viên: Trần Nguyễn Quốc Thái </h4>
+        <h4 class="font-weight-bold mb-4"> MSSV: 2380614759 </h4>
+        
+        <div class="mt-4">
+            <a href="/caesar" class="cipher-btn bg-primary">Caesar Cipher</a>
+            <a href="/playfair" class="cipher-btn bg-success">Playfair Cipher</a>
+            <a href="/railfence" class="cipher-btn bg-info">Railfence Cipher</a>
+            <a href="/vigenere" class="cipher-btn bg-warning text-dark">Vigenere Cipher</a>
+        </div>
     </div>
 </body>
 </html>

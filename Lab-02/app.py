@@ -98,7 +98,7 @@ def vigenere_encrypt():
         return "❌ Lỗi: Key Vigenere chỉ được chứa chữ cái (A-Z)!"
 
     cipher = VigenereCipher()
-    result = cipher.encrypt(text, key)
+    result = cipher.encrypt_text(text, key)
 
     return f"""
     <b>text:</b> {text} <br>
@@ -116,7 +116,7 @@ def vigenere_decrypt():
         return "❌ Lỗi: Key Vigenere chỉ được chứa chữ cái (A-Z)!"
 
     cipher = VigenereCipher()
-    result = cipher.decrypt(text, key)
+    result = cipher.decrypt_text(text, key)
 
     return f"""
     <b>text:</b> {text} <br>
