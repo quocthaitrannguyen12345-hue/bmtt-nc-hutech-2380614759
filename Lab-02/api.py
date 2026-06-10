@@ -7,6 +7,19 @@ from Cipher.playfair import PlayfairCipher
 
 app = Flask(__name__)
 
+# ===================== VALIDATION HELPERS =====================
+def is_valid_caesar(key):
+    return str(key).isdigit()
+
+def is_valid_vigenere(key):
+    return str(key).isalpha()
+
+def is_valid_playfair(key):
+    return str(key).isalpha() and len(str(key)) >= 3
+
+def is_valid_railfence(key):
+    return str(key).isdigit() and int(key) >= 2
+
 # ===================== CIPHERS =====================
 caesar_cipher = CaesarCipher()
 vigenere_cipher = VigenereCipher()
@@ -18,153 +31,75 @@ playfair_cipher = PlayfairCipher()
 @app.route('/api/caesar/encrypt', methods=['POST'])
 def caesar_encrypt():
     data = request.get_json()
-
-    plain_text = data.get('plain_text')
-    key = data.get('key')
-
-    if not plain_text or key is None:
-        return jsonify({"error": "missing plain_text or key"}), 400
-
-    encrypted_text = caesar_cipher.encrypt_text(plain_text, int(key))
-
-    return jsonify({'encrypted_text': encrypted_text})
-
+    plain_text, key = data.get('plain_text'), data.get('key')
+    if not plain_text or not is_valid_caesar(key):
+        return jsonify({"error": "Invalid Caesar input"}), 400
+    return jsonify({'encrypted_text': caesar_cipher.encrypt_text(plain_text, int(key))})
 
 @app.route('/api/caesar/decrypt', methods=['POST'])
 def caesar_decrypt():
     data = request.get_json()
-
-    cipher_text = data.get('cipher_text')
-    key = data.get('key')
-
-    if not cipher_text or key is None:
-        return jsonify({"error": "missing cipher_text or key"}), 400
-
-    decrypted_text = caesar_cipher.decrypt_text(cipher_text, int(key))
-
-    return jsonify({'decrypted_text': decrypted_text})
-
+    cipher_text, key = data.get('cipher_text'), data.get('key')
+    if not cipher_text or not is_valid_caesar(key):
+        return jsonify({"error": "Invalid Caesar input"}), 400
+    return jsonify({'decrypted_text': caesar_cipher.decrypt_text(cipher_text, int(key))})
 
 # ===================== VIGENERE =====================
 
 @app.route('/api/vigenere/encrypt', methods=['POST'])
 def vigenere_encrypt():
     data = request.get_json()
-
-    plain_text = data.get('plain_text')
-    key = data.get('key')
-
-    if not plain_text or not key:
-        return jsonify({"error": "missing plain_text or key"}), 400
-
-    encrypted_text = vigenere_cipher.encrypt_text(plain_text, key)
-
-    return jsonify({'encrypted_text': encrypted_text})
-
+    plain_text, key = data.get('plain_text'), data.get('key')
+    if not plain_text or not is_valid_vigenere(key):
+        return jsonify({"error": "Invalid Vigenere input"}), 400
+    return jsonify({'encrypted_text': vigenere_cipher.encrypt_text(plain_text, key.upper())})
 
 @app.route('/api/vigenere/decrypt', methods=['POST'])
 def vigenere_decrypt():
     data = request.get_json()
-
-    cipher_text = data.get('cipher_text')
-    key = data.get('key')
-
-    if not cipher_text or not key:
-        return jsonify({"error": "missing cipher_text or key"}), 400
-
-    decrypted_text = vigenere_cipher.decrypt_text(cipher_text, key)
-
-    return jsonify({'decrypted_text': decrypted_text})
-
+    cipher_text, key = data.get('cipher_text'), data.get('key')
+    if not cipher_text or not is_valid_vigenere(key):
+        return jsonify({"error": "Invalid Vigenere input"}), 400
+    return jsonify({'decrypted_text': vigenere_cipher.decrypt_text(cipher_text, key.upper())})
 
 # ===================== RAILFENCE =====================
 
 @app.route('/api/railfence/encrypt', methods=['POST'])
 def railfence_encrypt():
     data = request.get_json()
-
-    plain_text = data.get('plain_text')
-    key = data.get('key')
-
-    if not plain_text or key is None:
-        return jsonify({"error": "missing plain_text or key"}), 400
-
-    encrypted_text = railfence_cipher.rail_fence_encrypt(
-        plain_text,
-        int(key)
-    )
-
-    return jsonify({'encrypted_text': encrypted_text})
-
+    plain_text, key = data.get('plain_text'), data.get('key')
+    if not plain_text or not is_valid_railfence(key):
+        return jsonify({"error": "Invalid RailFence input (key >= 2)"}), 400
+    return jsonify({'encrypted_text': railfence_cipher.encrypt_text(plain_text, int(key))})
 
 @app.route('/api/railfence/decrypt', methods=['POST'])
 def railfence_decrypt():
     data = request.get_json()
-
-    cipher_text = data.get('cipher_text')
-    key = data.get('key')
-
-    if not cipher_text or key is None:
-        return jsonify({"error": "missing cipher_text or key"}), 400
-
-    decrypted_text = railfence_cipher.rail_fence_decrypt(
-        cipher_text,
-        int(key)
-    )
-
-    return jsonify({'decrypted_text': decrypted_text})
-
+    cipher_text, key = data.get('cipher_text'), data.get('key')
+    if not cipher_text or not is_valid_railfence(key):
+        return jsonify({"error": "Invalid RailFence input (key >= 2)"}), 400
+    return jsonify({'decrypted_text': railfence_cipher.decrypt_text(cipher_text, int(key))})
 
 # ===================== PLAYFAIR =====================
-
-@app.route('/api/playfair/creatematrix', methods=['POST'])
-def playfair_creatematrix():
-    data = request.get_json()
-
-    key = data.get('key')
-    if not key:
-        return jsonify({"error": "missing key"}), 400
-
-    matrix = playfair_cipher.create_playfair_matrix(key)
-
-    return jsonify({'matrix': matrix})
-
 
 @app.route('/api/playfair/encrypt', methods=['POST'])
 def playfair_encrypt():
     data = request.get_json()
-
-    plain_text = data.get('plain_text')
-    key = data.get('key')
-
-    if not plain_text or not key:
-        return jsonify({"error": "missing plain_text or key"}), 400
-
-    matrix = playfair_cipher.create_playfair_matrix(key)
-
-    encrypted_text = playfair_cipher.playfair_encrypt(plain_text, matrix)
-
-    return jsonify({'encrypted_text': encrypted_text})
-
+    plain_text, key = data.get('plain_text'), data.get('key')
+    if not plain_text or not is_valid_playfair(key):
+        return jsonify({"error": "Invalid Playfair input"}), 400
+    matrix = playfair_cipher.create_matrix(key)
+    return jsonify({'encrypted_text': playfair_cipher.encrypt_text(plain_text, matrix)})
 
 @app.route('/api/playfair/decrypt', methods=['POST'])
 def playfair_decrypt():
     data = request.get_json()
-
-    cipher_text = data.get('cipher_text')
-    key = data.get('key')
-
-    if not cipher_text or not key:
-        return jsonify({"error": "missing cipher_text or key"}), 400
-
-    matrix = playfair_cipher.create_playfair_matrix(key)
-
-    decrypted_text = playfair_cipher.playfair_decrypt(cipher_text, matrix)
-
-    return jsonify({'decrypted_text': decrypted_text})
-
+    cipher_text, key = data.get('cipher_text'), data.get('key')
+    if not cipher_text or not is_valid_playfair(key):
+        return jsonify({"error": "Invalid Playfair input"}), 400
+    matrix = playfair_cipher.create_matrix(key)
+    return jsonify({'decrypted_text': playfair_cipher.decrypt_text(cipher_text, matrix)})
 
 # ===================== RUN =====================
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

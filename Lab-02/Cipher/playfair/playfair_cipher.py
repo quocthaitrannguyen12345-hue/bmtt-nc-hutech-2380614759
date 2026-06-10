@@ -51,7 +51,7 @@ class PlayfairCipher:
         return res
 
     # ================= FIXED ENCRYPT =================
-    def encrypt(self, text, key):
+    def encrypt_text(self, text, key):
         matrix = self.create_matrix(key)
         pairs = self.prepare(text)
 
@@ -76,7 +76,7 @@ class PlayfairCipher:
         return result
 
     # ================= FIXED DECRYPT =================
-    def decrypt(self, text, key):
+    def decrypt_text(self, text, key):
         matrix = self.create_matrix(key)
         text = text.upper()
 

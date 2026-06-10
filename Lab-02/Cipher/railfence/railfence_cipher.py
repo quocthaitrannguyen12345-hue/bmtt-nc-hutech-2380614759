@@ -3,7 +3,7 @@ class RailFenceCipher:
         pass
 
     # ================= ENCRYPT =================
-    def encrypt(self, plain_text, num_rails):
+    def encrypt_text(self, plain_text, num_rails):
         if num_rails <= 1:
             return plain_text
 
@@ -24,7 +24,7 @@ class RailFenceCipher:
         return ''.join([''.join(r) for r in rails])
 
     # ================= DECRYPT =================
-    def decrypt(self, cipher_text, num_rails):
+    def decrypt_text(self, cipher_text, num_rails):
         if num_rails <= 1:
             return cipher_text
 
